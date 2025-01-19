@@ -1,0 +1,140 @@
+-- Reset tables (if needed)
+-- TRUNCATE TABLE Loan_Payment;
+-- TRUNCATE TABLE Loan;
+-- TRUNCATE TABLE Transaction;
+-- TRUNCATE TABLE Card;
+-- TRUNCATE TABLE Account;
+-- TRUNCATE TABLE Customer;
+-- TRUNCATE TABLE Employee;
+-- TRUNCATE TABLE Person;
+-- TRUNCATE TABLE Branch;
+
+-- Insert 10 branches
+INSERT INTO `Branch` (`branch_name`, `branch_country`, `branch_city`, `branch_address`, `contact_number`) VALUES
+('Central Branch', 'USA', 'New York', '100 Main Street', '+1-212-555-0101'),
+('West Branch', 'USA', 'Los Angeles', '200 West Sunset Blvd', '+1-310-555-0102'),
+('East Branch', 'USA', 'Boston', '300 Commonwealth Ave', '+1-617-555-0103'),
+('North Branch', 'Canada', 'Toronto', '400 Maple Street', '+1-416-555-0104'),
+('South Branch', 'USA', 'Miami', '500 Ocean Drive', '+1-305-555-0105'),
+('London Branch', 'UK', 'London', '600 High Street', '+44-20-555-0106'),
+('Paris Branch', 'France', 'Paris', '700 Rue de Rivoli', '+33-1-555-0107'),
+('Berlin Branch', 'Germany', 'Berlin', '800 Unter den Linden', '+49-30-555-0108'),
+('Tokyo Branch', 'Japan', 'Tokyo', '900 Shibuya Crossing', '+81-3-555-0109'),
+('Sydney Branch', 'Australia', 'Sydney', '1000 George Street', '+61-2-555-0110');
+
+-- Insert 20 Persons (10 employees, person_type=1, and 10 customers, person_type=2)
+-- Employees: realistic birthdates, joining dates older than customers
+-- Customers: realistic birthdates, recent joining/creation dates
+INSERT INTO `Person` (`person_type`, `first_name`, `last_name`, `email`, `contact_number`, `date_of_birth`, `address`, `joining_date`, `created_at`) VALUES
+(1, 'John', 'Doe', 'john.doe@bankexample.com', '+1-212-555-1001', '1979-04-15', '101 Park Ave, New York, USA', '2008-03-15', NOW()),
+(1, 'Jane', 'Smith', 'jane.smith@bankexample.com', '+1-310-555-1002', '1982-08-21', '202 West Blvd, Los Angeles, USA', '2009-07-10', NOW()),
+(1, 'Robert', 'Johnson', 'robert.johnson@bankexample.com', '+1-617-555-1003', '1975-11-30', '303 Beacon St, Boston, USA', '2007-05-25', NOW()),
+(1, 'Emily', 'Davis', 'emily.davis@bankexample.com', '+1-416-555-1004', '1985-01-05', '404 Maple Rd, Toronto, Canada', '2010-02-14', NOW()),
+(1, 'Michael', 'Wilson', 'michael.wilson@bankexample.com', '+1-305-555-1005', '1978-06-11', '505 Ocean Dr, Miami, USA', '2006-11-01', NOW()),
+(1, 'Karen', 'Brown', 'karen.brown@bankexample.com', '+44-20-555-1006', '1980-09-12', '606 Regent St, London, UK', '2011-09-10', NOW()),
+(1, 'David', 'Jones', 'david.jones@bankexample.com', '+33-1-555-1007', '1977-12-02', '707 Rue Cler, Paris, France', '2005-04-30', NOW()),
+(1, 'Linda', 'Garcia', 'linda.garcia@bankexample.com', '+49-30-555-1008', '1983-03-19', '808 Alexanderplatz, Berlin, Germany', '2012-12-12', NOW()),
+(1, 'Mark', 'Miller', 'mark.miller@bankexample.com', '+81-3-555-1009', '1976-10-27', '909 Shinjuku, Tokyo, Japan', '2008-08-08', NOW()),
+(1, 'Patricia', 'Taylor', 'patricia.taylor@bankexample.com', '+61-2-555-1010', '1981-07-16', '1010 Darling St, Sydney, Australia', '2009-04-04', NOW()),
+(2, 'Alice', 'Anderson', 'alice.anderson@example.com', '+1-212-555-2001', '1990-03-14', '1101 Broadway, New York, USA', '2020-01-10', NOW()),
+(2, 'Peter', 'Thomas', 'peter.thomas@example.com', '+1-310-555-2002', '1992-05-29', '1202 Vine St, Los Angeles, USA', '2020-02-15', NOW()),
+(2, 'Susan', 'Jackson', 'susan.jackson@example.com', '+1-617-555-2003', '1988-11-03', '1303 Commonwealth Ave, Boston, USA', '2020-03-20', NOW()),
+(2, 'Daniel', 'White', 'daniel.white@example.com', '+1-416-555-2004', '1991-09-07', '1404 King St, Toronto, Canada', '2020-04-25', NOW()),
+(2, 'Sarah', 'Harris', 'sarah.harris@example.com', '+1-305-555-2005', '1989-01-12', '1505 Collins Ave, Miami, USA', '2020-05-30', NOW()),
+(2, 'Jessica', 'Martin', 'jessica.martin@example.com', '+44-20-555-2006', '1993-07-08', '1606 Baker St, London, UK', '2020-06-05', NOW()),
+(2, 'Thomas', 'Thompson', 'thomas.thompson@example.com', '+33-1-555-2007', '1994-12-19', '1707 Montparnasse, Paris, France', '2020-07-10', NOW()),
+(2, 'Maria', 'Moore', 'maria.moore@example.com', '+49-30-555-2008', '1996-04-01', '1808 Potsdamer Platz, Berlin, Germany', '2020-08-15', NOW()),
+(2, 'James', 'Clark', 'james.clark@example.com', '+81-3-555-2009', '1995-02-23', '1909 Ginza, Tokyo, Japan', '2020-09-20', NOW()),
+(2, 'Laura', 'Lee', 'laura.lee@example.com', '+61-2-555-2010', '1993-06-14', '2010 Circular Quay, Sydney, Australia', '2020-10-10', NOW());
+
+-- Employees: (person_id 1-10)
+INSERT INTO `Employee` (`person_id`, `branch_id`, `role`) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 1),
+(4, 4, 2),
+(5, 5, 1),
+(6, 6, 1),
+(7, 7, 2),
+(8, 8, 1),
+(9, 9, 2),
+(10, 10, 1);
+
+-- Customers: (person_id 11-20), created_by_id references Employees(1-10)
+INSERT INTO `Customer` (`person_id`, `created_by_id`) VALUES
+(11, 1),
+(12, 2),
+(13, 3),
+(14, 4),
+(15, 5),
+(16, 6),
+(17, 7),
+(18, 8),
+(19, 9),
+(20, 10);
+
+-- Accounts for customers (11-20)
+INSERT INTO `Account` (`account_number`, `person_id`, `account_type`, `balance`, `status`, `opened_in_branch_id`, `opened_by_employee_id`, `created_at`, `closed_at`) VALUES
+('ACC-1001', 11, 1, 1000.00, 1, 1, 1, NOW(), NULL),
+('ACC-1002', 12, 2, 2500.50, 1, 2, 2, NOW(), NULL),
+('ACC-1003', 13, 1, 500.00, 1, 3, 3, NOW(), NULL),
+('ACC-1004', 14, 1, 10000.00, 1, 4, 4, NOW(), NULL),
+('ACC-1005', 15, 2, 750.75, 1, 5, 5, NOW(), NULL),
+('ACC-1006', 16, 1, 200.00, 1, 6, 6, NOW(), NULL),
+('ACC-1007', 17, 2, 3000.00, 1, 7, 7, NOW(), NULL),
+('ACC-1008', 18, 1, 400.00, 1, 8, 8, NOW(), NULL),
+('ACC-1009', 19, 2, 9900.99, 1, 9, 9, NOW(), NULL),
+('ACC-1010', 20, 1, 50.00, 1, 10, 10, NOW(), NULL);
+
+-- Cards for accounts (account_id 1-10)
+INSERT INTO `Card` (`account_id`, `card_type`, `card_number`, `cvv`, `expiry_date`) VALUES
+(1, 1, '4111111111111111', 123, '2025-12-31'),
+(2, 2, '5500000000000004', 456, '2025-11-30'),
+(3, 1, '4111111111111112', 234, '2026-10-31'),
+(4, 2, '5500000000000005', 567, '2025-09-30'),
+(5, 1, '4111111111111113', 345, '2026-08-31'),
+(6, 1, '4111111111111114', 678, '2025-07-31'),
+(7, 2, '5500000000000006', 789, '2026-06-30'),
+(8, 1, '4111111111111115', 890, '2025-05-31'),
+(9, 2, '5500000000000007', 901, '2026-04-30'),
+(10,1, '4111111111111116', 321, '2026-03-31');
+
+-- Transactions for accounts (1-10)
+INSERT INTO `Transaction` (`account_id`, `transaction_type`, `amount`, `time`, `description`) VALUES
+(1, 1, 100.00, NOW(), 'Initial Deposit'),
+(2, 2, 50.00, NOW(), 'ATM Withdrawal'),
+(3, 1, 500.00, NOW(), 'Salary Deposit'),
+(4, 1, 200.00, NOW(), 'Check Deposit'),
+(5, 2, 100.00, NOW(), 'Online Purchase'),
+(6, 1, 300.00, NOW(), 'Cash Deposit'),
+(7, 2, 150.00, NOW(), 'Bill Payment'),
+(8, 1, 1000.00, NOW(), 'Wire Transfer In'),
+(9, 2, 200.00, NOW(), 'Debit Card Purchase'),
+(10,1, 400.00, NOW(), 'Mobile Deposit');
+
+-- Loans for accounts (1-10)
+INSERT INTO `Loan` (`account_id`, `loan_type`, `loan_amount`, `interest_rate`, `start_date`, `end_date`) VALUES
+(1, 1, 5000.00, 5.00, '2024-01-01', '2026-01-01'),
+(2, 1, 10000.00, 4.50, '2024-02-01', '2027-02-01'),
+(3, 2, 250000.00, 3.25, '2024-03-01', '2044-03-01'),
+(4, 1, 2000.00, 6.00, '2024-04-01', '2025-04-01'),
+(5, 2, 150000.00, 3.50, '2024-05-01', '2044-05-01'),
+(6, 1, 7500.00, 5.25, '2024-06-01', '2027-06-01'),
+(7, 2, 300000.00, 3.00, '2024-07-01', '2044-07-01'),
+(8, 1, 4000.00, 5.75, '2024-08-01', '2026-08-01'),
+(9, 1, 12000.00, 4.75, '2024-09-01', '2028-09-01'),
+(10,2, 200000.00, 3.20, '2024-10-01', '2044-10-01');
+
+-- Loan_Payments for loans (1-10)
+INSERT INTO `Loan_Payment` (`loan_id`, `amount`, `paid_at`) VALUES
+(1, 500.00, NOW()),
+(2, 600.00, NOW()),
+(3, 2000.00, NOW()),
+(4, 250.00, NOW()),
+(5, 1500.00, NOW()),
+(6, 750.00, NOW()),
+(7, 3000.00, NOW()),
+(8, 400.00, NOW()),
+(9, 1200.00, NOW()),
+(10,2000.00, NOW());
+
